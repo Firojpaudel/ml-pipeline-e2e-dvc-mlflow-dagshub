@@ -40,8 +40,7 @@ stages:
     params:
       - train.data_path
       - train.model_path
-    metrics:
-      - mlruns/
+    # Removed metrics: - mlruns/ since it's not a local output
     outs:
       - confusion_matrix.png
       - classification_report.json
