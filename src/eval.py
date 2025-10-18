@@ -55,7 +55,6 @@ def load_model_safely(model_path):
 def evaluate():
     params = load_params()
     
-    # Use correct parameter names
     data_path = params['data_path']
     model_path = params['model_path']
     
@@ -82,6 +81,10 @@ def evaluate():
     
     # Start MLflow evaluation run
     with mlflow.start_run(run_name="model_evaluation"):
+        # Log additional files
+        mlflow.log_artifact("requirements.txt")
+        mlflow.log_artifact("params.yaml")
+        
         # Make predictions
         y_pred = model.predict(X_test)
         y_pred_proba = None
@@ -112,7 +115,7 @@ def evaluate():
         mlflow.log_param("data_path", data_path)
         mlflow.log_param("model_path", model_path)
         
-        # Confusion matrix
+        # Generate and log artifacts
         cm = confusion_matrix(y_test, y_pred)
         plt.figure(figsize=(8, 6))
         sns.heatmap(cm, annot=True, fmt='d', cmap='Blues')
@@ -123,36 +126,28 @@ def evaluate():
         plt.savefig(cm_path, bbox_inches='tight')
         plt.close()
         mlflow.log_artifact(cm_path)
-        
-        # Clean up
-        if os.path.exists(cm_path):
-            os.remove(cm_path)
-        
-        # Classification report
+        # Do not remove here; let DVC handle tracking
+
         report = classification_report(y_test, y_pred, output_dict=True)
         report_path = "classification_report.json"
         with open(report_path, 'w') as f:
             json.dump(report, f, indent=2)
         mlflow.log_artifact(report_path)
-        os.remove(report_path)
-        
-        # Feature importance (if available)
+        # Do not remove here
+
         if hasattr(model, 'feature_importances_'):
             importances = model.feature_importances_
             indices = np.argsort(importances)[-10:][::-1]
-            
             plt.figure(figsize=(10, 6))
             plt.title("Top 10 Feature Importances")
             plt.bar(range(len(indices)), importances[indices])
-            plt.xticks(range(len(indices)), 
-                      [X_test.columns[i] for i in indices], 
-                      rotation=45, ha='right')
+            plt.xticks(range(len(indices)), [X_test.columns[i] for i in indices], rotation=45, ha='right')
             plt.tight_layout()
             importance_path = "feature_importance.png"
             plt.savefig(importance_path, bbox_inches='tight')
             plt.close()
             mlflow.log_artifact(importance_path)
-            os.remove(importance_path)
+            # Do not remove here
         
         # Quality assessment
         with open("params.yaml", "r") as f:
