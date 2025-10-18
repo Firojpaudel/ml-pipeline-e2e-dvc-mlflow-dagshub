@@ -26,7 +26,8 @@ The following images illustrate key aspects of the pipeline as seen on DAGsHub:
 1. **Initial Repository and Pipeline**  
    Shows the initial repository files and data pipeline structure.  
    <div align="center">
-    <img src="./images/Screenshot_1.png" width="600px">
+    <img src="./images/Screenshot_1.png" width="550px">
+    <img src="./images/pipeline.png" width="700px">
    </div>
 
 2. **Model.pkl Stored with DVC**  
