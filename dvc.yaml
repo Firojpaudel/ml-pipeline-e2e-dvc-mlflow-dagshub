@@ -1,0 +1,17 @@
+stages:
+  preprocess:
+    cmd: python src/preprocess.py -d src/preprocess.py -d 
+      data/raw/earthquake_data_tsunami.csv -d params.yaml -p preprocess.input -p
+      preprocess.output -p preprocess.test_size -o data/processed/ --desc 
+      "Preprocess raw earthquake data into training and test sets"
+  train:
+    cmd: python src/train.py -d src/train.py -d data/processed/ -d params.yaml 
+      -d requirements.txt -p train.data_path -p train.model_path -p 
+      train.n_estimators -p train.max_depth -o models/model.pkl --desc "Train 
+      Random Forest model on processed data"
+  evaluate:
+    cmd: python src/eval.py -d src/eval.py -d models/model.pkl -d 
+      data/processed/ -d params.yaml -d requirements.txt -p train.data_path -p 
+      train.model_path -o confusion_matrix.png -o classification_report.json -o 
+      feature_importance.png -m mlruns/ --desc "Evaluate model performance and 
+      log metrics"
