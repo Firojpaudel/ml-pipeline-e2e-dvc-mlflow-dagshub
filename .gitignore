@@ -1,2 +1,5 @@
 .venv/
 .env
+/confusion_matrix.png
+/classification_report.json
+/feature_importance.png

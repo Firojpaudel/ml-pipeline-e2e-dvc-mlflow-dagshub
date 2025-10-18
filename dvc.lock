@@ -57,3 +57,44 @@ stages:
       hash: md5
       md5: 1eb1d2bc45c1b28520a5a27d50a6d2cb
       size: 334950
+  evaluate:
+    cmd: python src/eval.py
+    deps:
+    - path: data/processed/
+      hash: md5
+      md5: 5c6c4a43948d3e7ae8b103b85c20579a.dir
+      size: 183006
+      nfiles: 4
+    - path: models/model.pkl
+      hash: md5
+      md5: 1eb1d2bc45c1b28520a5a27d50a6d2cb
+      size: 334950
+    - path: params.yaml
+      hash: md5
+      md5: 02078873829b0885ecc2fd19bf185c9e
+      size: 762
+    - path: requirements.txt
+      hash: md5
+      md5: e110f1410bea9c5eb6a7ced87d8e5e31
+      size: 71
+    - path: src/eval.py
+      hash: md5
+      md5: 937c8efdff6b169153533ca8a3fa868a
+      size: 6297
+    params:
+      params.yaml:
+        train.data_path: data/processed
+        train.model_path: models/model.pkl
+    outs:
+    - path: classification_report.json
+      hash: md5
+      md5: f248e3f877fbcce6a2ca36f5647d535a
+      size: 567
+    - path: confusion_matrix.png
+      hash: md5
+      md5: e576d5a5b657d9f33e120daaa3ff007c
+      size: 16291
+    - path: feature_importance.png
+      hash: md5
+      md5: 4e7092adfe8547d90f90246d4689942f
+      size: 26533
